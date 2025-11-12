@@ -38,41 +38,55 @@
       border-radius: 10px;
       backdrop-filter: blur(8px);
     }
+
+    #countdown {
+      font-weight: bold;
+      font-size: 1.2em;
+      margin-top: 10px;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
   <div id="content"></div>
 
   <script>
-    // Unlock time (Dec 5, 2025, 00:00)
-    const unlockTime = new Date("2025-12-05T00:00:00");
-    const now = new Date();
+    const unlockTime = new Date("2025-11-12T12:35:00");
     const contentDiv = document.getElementById("content");
 
-    if (now >= unlockTime) {
-      // Show the video
-      contentDiv.innerHTML = `
-        <h1>🎉 Happy Birthday 🎂💖</h1>
-        <video controls autoplay>
-          <source src="https://dl.dropboxusercontent.com/scl/fi/sz4g3pbvzhw34ijc51zp8/varshini-bday-2.mp4?rlkey=89fcftsmtwy7av10xcremzqby&st=qnddg8fn&dl=0" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <p class="message">🎊 Hope this surprise made you smile 💕</p>
-      `;
-    } else {
-      // Before unlock time
+    function updateCountdown() {
+      const now = new Date();
       const diff = unlockTime - now;
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
 
-      contentDiv.innerHTML = `
-        <h1>🎁 Surprise locked till Dec 5, 2025 ⏰</h1>
-        <p class="message">🎊 Surprise iruku at Dec 5, 12:00 AM! 💖<br>
-        Etho ennala mudinchathu 🥹<br><br>
-        ⏳ Wait for it... ${days} days, ${hours} hrs, ${minutes} mins left!</p>
-      `;
+      if (diff <= 0) {
+        // Show the video after unlock time
+        contentDiv.innerHTML = `
+          <h1>🎉 Happy Birthday 🎂💖</h1>
+          <video controls autoplay>
+            <source src="https://dl.dropboxusercontent.com/scl/fi/sz4g3pbvzhw34ijc51zp8/varshini-bday-2.mp4?rlkey=89fcftsmtwy7av10xcremzqby&st=qnddg8fn&dl=0" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+          <p class="message">🎊 Hope this surprise made you smile 💕</p>
+        `;
+      } else {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((diff / (1000 * 60)) % 60);
+        const seconds = Math.floor((diff / 1000) % 60);
+
+        contentDiv.innerHTML = `
+          <h1>🎁 Surprise locked till Dec 5, 2025 ⏰</h1>
+          <p class="message">🎊 Surprise iruku at Dec 5, 12:00 AM! 💖<br>
+          Etho ennala mudinchathu 🥹<br><br>
+          ⏳ Wait for it...</p>
+          <div id="countdown">${days} days, ${hours} hrs, ${minutes} mins, ${seconds} secs left!</div>
+        `;
+      }
     }
+
+    // Update countdown every second
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
   </script>
 </body>
 </html>
